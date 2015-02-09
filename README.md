@@ -12,9 +12,13 @@ go get github.com/hyperboloide/sprocess
 
 **sprocess** is use to transform streams and save them somewhere. It can also do the inverse operation: get a stream and untransform it.
 
+If you want to jump straight to the code [see this example](https://gist.github.com/fdelbos/0c1a0b47ae2cab0e971f#file-example-go)
+
 ### Encoders and Decoders
 
 Transformations are done with **encoders** and **decoders**. These are structs that transform and untransform a stream, like compress/decompress or encrypt/uncrypt.
+
+Note that all Encoders and Decoders defines a field `Name` that is used for error reporting.
 
 #### AES
 
@@ -56,6 +60,39 @@ type Gzip struct {
 *  `"speed"` : `gzip.BestSpeed`
 *  `"default"`: `gzip.DefaultCompression`
 
+#### Image
+Transforms an image (for resize and thumbnails). Note that **Image is Encoder only**.
+
+```go
+type Image struct {
+    Operation     ImageOperation
+    Height        uint
+    Width         uint
+    Interpolation string
+    Output        string
+    Name          string
+}
+```
+
+`ImageOperation` defines the type of operation you want, it can be either:
+
+* `ImageThumbnail` : to downscale an image preserving its aspect ratio to the maximum dimensions (`Width`, `Height`)
+* `ImageResize` :  to create a scaled image with new dimensions. If either `Width` or `Height` is set to 0, it will be set to an aspect ratio preserving value.
+
+`Interpolation` defines the interpolation function to use (from fast to slow execution time):
+
+* `NearestNeighbor`: [Nearest-neighbor interpolation](http://en.wikipedia.org/wiki/Nearest-neighbor_interpolation) (default if not set)
+* `Bilinear`: [Bilinear interpolation](http://en.wikipedia.org/wiki/Bilinear_interpolation)
+* `Bicubic`: [Bicubic interpolation](http://en.wikipedia.org/wiki/Bicubic_interpolation)
+* `MitchellNetravali`: [Mitchell-Netravali interpolation](http://dl.acm.org/citation.cfm?id=378514)
+* `Lanczos2`: [Lanczos resampling](http://en.wikipedia.org/wiki/Lanczos_resampling) with a=2
+* `Lanczos3`: [Lanczos resampling](http://en.wikipedia.org/wiki/Lanczos_resampling) with a=3
+
+`Output` defines the output format:
+
+* `jpg` (default if not set)
+* `png`
+* `gif`
 
 ### Outputs, Inputs
 
@@ -105,7 +142,7 @@ export AWS_SECRET_ACCESS_KEY="my_secret_access_key"
 
 **sprocess** also contains HTTP handlers to save, get and delete files.
 
-
+An example can be found here : [https://gist.github.com/fdelbos/0c1a0b47ae2cab0e971f#file-example-go](https://gist.github.com/fdelbos/0c1a0b47ae2cab0e971f#file-example-go)
 
 
 

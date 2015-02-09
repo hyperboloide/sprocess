@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func TestRw(t *testing.T) {
+func TestSprocess(t *testing.T) {
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "Sprocess Suite")
 }
@@ -26,5 +26,5 @@ var testFileReader = func() (*os.File) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return f	
+	return f
 }
