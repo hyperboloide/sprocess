@@ -4,7 +4,7 @@ sprocess is a library designed to do transformations on golang streams and http 
 
 ## installation
 
-```shell
+```bash
 go get github.com/hyperboloide/sprocess
 ```
 
@@ -20,7 +20,7 @@ Transformations are done with **encoders** and **decoders**. These are structs t
 
 AES encrypts and decrypts the stream.
 
-```golang
+```go
 type AES struct {
     Key          []byte // Encryption key
     Base64String string // or a base64 encoded string
@@ -33,7 +33,7 @@ You must provide either a `Key` or a `Base64String`. To encrypt in AES 256, prov
 
 Run a command in a Bash shell. The stream is piped to the command.
 
-```golang
+```go
 type Bash struct {
     Cmd  string // Command to run.
     Name string
@@ -44,7 +44,7 @@ type Bash struct {
 
 Compress a stream.
 
-```golang
+```go
 type Gzip struct {
     Algo string // compression level
     Name string
@@ -67,7 +67,7 @@ These may also allow for deletetion.
 
 Save to the local filesystem.
 
-```golang
+```go
 type File struct {
     Dir  string // directory
     Name string
@@ -75,6 +75,31 @@ type File struct {
 ```
 
 Streams are saved in directory. If doesn't exists, directory will be created.
+
+#### S3Bucket
+
+Save to an S3 Bucket
+
+```go
+type S3Bucket struct {
+    AccessKey string // AWS Acces Key
+    SecretKey string // AWS Secret Key
+    Domain    string // AWS Domain
+    Bucket    string // Bucket name
+    Name      string
+}
+```
+
+`AccessKey` and `SecretKey` will be read directly from the environment if not set. To set your environment do something like this :
+
+```bash
+export AWS_ACCESS_KEY_ID="my_access_key_id"
+export AWS_SECRET_ACCESS_KEY="my_secret_access_key"
+```
+
+`Domain` correspond to S3 endpoint where you created the bucket (see : [http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region](http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region))
+
+
 
 ### Http Handlers
 
