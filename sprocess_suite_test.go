@@ -4,6 +4,8 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"testing"
+	"log"
+	"os"
 )
 
 func TestRw(t *testing.T) {
@@ -17,4 +19,12 @@ var genBlob = func(size int) []byte {
 		blob[i] = 65 // ascii 'A'
 	}
 	return blob
+}
+
+var testFileReader = func() (*os.File) {
+	f, err := os.Open("./tests/test.jpg")
+	if err != nil {
+		log.Fatal(err)
+	}
+	return f	
 }

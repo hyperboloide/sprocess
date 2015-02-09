@@ -145,7 +145,7 @@ func NewDecoding(decoders []Decoder, r io.ReadCloser, d *Data) *Pipeline {
 
 			errCh <- e.Decode(r, w, d)
 		}(e, p.lastReader, writer, d)
-
+		
 		p.lastReader = nextReader
 		p.errorChain[i] = errCh
 		p.cancelChain[i] = cancelCh

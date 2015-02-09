@@ -47,5 +47,5 @@ type Inputer interface {
 
 type Deleter interface {
 	Base
-	Delete(string) error
+	Delete(string, *Data) error
 }
