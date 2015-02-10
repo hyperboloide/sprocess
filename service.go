@@ -44,6 +44,7 @@ func (s *Service) Encode(id string, r io.ReadCloser, data *Data) error {
 		if err := p.Exec(w); err != nil {
 			return err
 		}
+		w.Close()
 	}
 	return nil
 }
@@ -73,6 +74,7 @@ func (s *Service) Decode(id string, w io.WriteCloser, data *Data) error {
 		if err := p.Exec(w); err != nil {
 			return err
 		}
+		r.Close()
 	}
 	return nil
 }

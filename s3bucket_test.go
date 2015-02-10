@@ -11,7 +11,7 @@ import (
 
 var _ = Describe("S3bucket", func() {
 
-	testBin := make([]byte, 1<<16)
+	testBin := make([]byte, 1<<8)
 	rand.Read(testBin)
 	data := NewData()
 	s3 := &S3Bucket{
@@ -51,4 +51,44 @@ var _ = Describe("S3bucket", func() {
 		_, err := s3.NewReader(id, data)
 		Ω(err).ToNot(BeNil())
 	})
+
+	It("should do service with s3", func() {
+		data := NewData()
+		id := "pic.jpg"
+
+		size := &Size{
+			Name: "size",
+		}
+		Ω(size.Start()).To(BeNil())
+
+		img := &Image{
+			Operation: ImageResize,
+			Height:    100,
+			Output:    "jpg",
+			Name:      "resize",
+		}
+		Ω(img.Start()).To(BeNil())
+
+		service := &Service{
+			EncodingPipe: &EncodingPipeline{
+				Encoders: []Encoder{img, size},
+				Output:   s3,
+			},
+			DecodingPipe: &DecodingPipeline{
+				Decoders: []Decoder{size},
+				Input:    s3,
+			},
+		}
+
+		Ω(service.Encode(id, testFileReader(), data)).To(BeNil())
+
+		out := new(bytes.Buffer)
+		r, w := io.Pipe()
+		go func() {
+			io.Copy(out, r)
+		}()
+		Ω(service.Decode(id, w, data)).To(BeNil())
+
+	})
+
 })
