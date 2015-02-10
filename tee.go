@@ -66,6 +66,6 @@ func (t *Tee) Encode(r io.Reader, w io.Writer, d *Data) error {
 		return err
 	}
 	err = <-errorTee
-	d.Set(t.Name, teeData)
+	d.Set(t.Name, teeData.Export())
 	return err
 }

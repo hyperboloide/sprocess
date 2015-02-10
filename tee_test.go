@@ -61,6 +61,11 @@ var _ = Describe("Tee", func() {
 		}
 		Ω(outputSmall.Start()).To(BeNil())
 
+		size := &Size{
+			Name: "size",
+		}
+		Ω(size.Start()).To(BeNil())
+		
 		imgLarge := &Image{
 			Operation: ImageResize,
 			Height:    300,
@@ -78,7 +83,7 @@ var _ = Describe("Tee", func() {
 		Ω(imgSmall.Start()).To(BeNil())
 
 		tee := &Tee{
-			Encoders: []Encoder{imgSmall},
+			Encoders: []Encoder{imgSmall, size},
 			Output:   outputSmall,
 			Name:     "tee",
 		}
@@ -86,7 +91,7 @@ var _ = Describe("Tee", func() {
 
 		service := &Service{
 			EncodingPipe: &EncodingPipeline{
-				Encoders: []Encoder{tee, imgLarge},
+				Encoders: []Encoder{tee, imgLarge, size},
 				Output:   outputLarge,
 			},
 		}
@@ -108,6 +113,11 @@ var _ = Describe("Tee", func() {
 		Ω(img).ToNot(BeNil())
 		Ω(img.Bounds().Size().Y).To(Equal(100))
 
+		d := data.Export()
+		dtee := d["tee"].(map[string]interface{})
+		
+		Ω(d["size"].(int64) > dtee["size"].(int64)).To(BeTrue())
+		
 	})
 
 	It("should do service with tee error", func() {
