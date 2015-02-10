@@ -44,6 +44,21 @@ type Bash struct {
 }
 ```
 
+#### CheckSum
+
+Make a checksum of the stream during encoding and return an error if the checksum dosen't match during decoding. The checksum is save in data with the key corresponding to the Encoder name
+
+```go
+type CheckSum struct {
+    Hash string
+    Name string
+}
+```
+
+`Hash` can be either "md5" or "sha1" (default if not set)
+
+`Name` is mandatory
+
 #### Gzip
 
 Compress a stream.
@@ -93,6 +108,18 @@ type Image struct {
 * `jpg` (default if not set)
 * `png`
 * `gif`
+
+#### Size
+
+Count the number of bytes
+
+```go
+type Size struct {
+    Name string
+}
+```
+
+The sum of bytes will be recored in data with the key `Name`.
 
 #### Tee
 
