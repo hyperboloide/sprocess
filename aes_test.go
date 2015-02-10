@@ -19,7 +19,7 @@ var _ = Describe("Aes", func() {
 		Base64String: "ETl5QyPnHfi+vF4HrZfFvO2Julv4LVL7HNB1N7vkLGU=",
 		Name:         "aes",
 	}
-	
+
 	It("should Encode", func() {
 		Ω(aes.Start()).To(BeNil())
 		Ω(aes.Encode(
@@ -72,16 +72,16 @@ var _ = Describe("Aes", func() {
 
 	})
 
-	It("should do service with aes", func(){
+	It("should do service with aes", func() {
 		data := NewData()
 		id := "encrypted"
-		
+
 		fs := &File{
-			Dir: "/tmp/" + GenId(),
+			Dir:  "/tmp/" + GenId(),
 			Name: "fs",
 		}
 		Ω(fs.Start()).To(BeNil())
-		
+
 		key := make([]byte, 32)
 		rand.Read(key)
 		aes := &AES{
@@ -97,12 +97,12 @@ var _ = Describe("Aes", func() {
 
 		service := &Service{
 			EncodingPipe: &EncodingPipeline{
-				Encoders: []Encoder{chck, aes},				
+				Encoders: []Encoder{chck, aes},
 				Output:   fs,
 			},
 			DecodingPipe: &DecodingPipeline{
 				Decoders: []Decoder{aes, chck},
-				Input:   fs,
+				Input:    fs,
 			},
 		}
 
@@ -118,7 +118,6 @@ var _ = Describe("Aes", func() {
 		}()
 		Ω(service.Decode(id, w, data)).To(BeNil())
 
-		
 	})
-	
+
 })

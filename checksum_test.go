@@ -1,8 +1,8 @@
 package sprocess_test
 
 import (
-	. "github.com/hyperboloide/sprocess"
 	"bytes"
+	. "github.com/hyperboloide/sprocess"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -16,7 +16,7 @@ var _ = Describe("Checksum", func() {
 	chck := &CheckSum{
 		Name: "chck",
 	}
-	
+
 	It("should Encode", func() {
 		Ω(chck.Start()).To(BeNil())
 		Ω(chck.Encode(
@@ -42,10 +42,10 @@ var _ = Describe("Checksum", func() {
 		Ω(exists).To(BeTrue())
 
 	})
-	
+
 	It("should not Decode if mismatch", func() {
 		out := new(bytes.Buffer)
 		Ω(chck.Decode(testFileReader(), out, data)).ToNot(BeNil())
 	})
-	
+
 })

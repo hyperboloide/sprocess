@@ -1,8 +1,8 @@
 package sprocess_test
 
 import (
-	. "github.com/hyperboloide/sprocess"
 	"bytes"
+	. "github.com/hyperboloide/sprocess"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -44,5 +44,4 @@ var _ = Describe("Size", func() {
 
 	})
 
-	
 })

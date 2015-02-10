@@ -65,7 +65,7 @@ var _ = Describe("Tee", func() {
 			Name: "size",
 		}
 		Ω(size.Start()).To(BeNil())
-		
+
 		imgLarge := &Image{
 			Operation: ImageResize,
 			Height:    300,
@@ -115,9 +115,9 @@ var _ = Describe("Tee", func() {
 
 		d := data.Export()
 		dtee := d["tee"].(map[string]interface{})
-		
+
 		Ω(d["size"].(int64) > dtee["size"].(int64)).To(BeTrue())
-		
+
 	})
 
 	It("should do service with tee error", func() {

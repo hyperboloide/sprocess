@@ -12,7 +12,7 @@ var _ = Describe("Compress", func() {
 	testBin := genBlob(1 << 22)
 	out1 := new(bytes.Buffer)
 	data := NewData()
-	
+
 	gz := &Gzip{
 		Algo: "speed",
 	}

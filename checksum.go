@@ -1,25 +1,25 @@
-// 
+//
 // checksum.go
-// 
+//
 // Created by Frederic DELBOS - fred@hyperboloide.com on Feb 10 2015.
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
-// 
+//
 
 package sprocess
 
 import (
-	"errors"
-	"io"
-	"crypto/sha1"
 	"crypto/md5"
+	"crypto/sha1"
+	"errors"
 	"fmt"
 	"hash"
+	"io"
 )
 
 type CheckSum struct {
 	Hash string
-	Name     string
+	Name string
 }
 
 func (c *CheckSum) GetName() string {
@@ -30,7 +30,7 @@ func (c *CheckSum) Start() error {
 	switch c.Hash {
 	case "", "md5", "sha1":
 	default:
-		return errors.New("Hash '"+c.Hash+"' is not supported")		
+		return errors.New("Hash '" + c.Hash + "' is not supported")
 	}
 	return nil
 }
@@ -43,7 +43,7 @@ func (c *CheckSum) Encode(r io.Reader, w io.Writer, d *Data) error {
 	case "md5":
 		h = md5.New()
 	default:
-		return errors.New("Hash '"+c.Hash+"' is not supported")
+		return errors.New("Hash '" + c.Hash + "' is not supported")
 	}
 
 	reader := io.TeeReader(r, h)
@@ -63,14 +63,14 @@ func (c *CheckSum) Decode(r io.Reader, w io.Writer, d *Data) error {
 	case "md5":
 		h = md5.New()
 	default:
-		return errors.New("Hash '"+c.Hash+"' is not supported")
+		return errors.New("Hash '" + c.Hash + "' is not supported")
 	}
 
 	value, err := d.Get(c.GetName())
 	if err != nil {
 		return err
 	}
-	
+
 	reader := io.TeeReader(r, h)
 	_, err = io.Copy(w, reader)
 	if err != nil {
@@ -81,4 +81,3 @@ func (c *CheckSum) Decode(r io.Reader, w io.Writer, d *Data) error {
 	}
 	return nil
 }
-
