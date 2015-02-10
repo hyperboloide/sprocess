@@ -107,7 +107,9 @@ type Tee struct {
 ```
 
 `Encoders` defines the operations to be applied on the new stream. This can be empty.
-`Output` defines where to save the output. Note that you should a unique `Outputer` to avoid conflicts.
+
+
+`Output` defines where to save the output. Note that a unique `Outputer` should be used to avoid conflicts.
 
 
 ### Outputs, Inputs
