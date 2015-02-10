@@ -33,18 +33,18 @@ func (s *Service) Encode(id string, r io.ReadCloser, data *Data) error {
 	if err != nil {
 		return err
 	}
+	defer w.Close()
+
 	if len(s.EncodingPipe.Encoders) == 0 {
 		_, err := io.Copy(w, r)
 		if err != nil {
 			return err
 		}
-		w.Close()
 	} else {
 		p := NewEncoding(s.EncodingPipe.Encoders, r, data)
 		if err := p.Exec(w); err != nil {
 			return err
 		}
-		w.Close()
 	}
 	return nil
 }
@@ -57,11 +57,11 @@ func (s *Service) Decode(id string, w io.WriteCloser, data *Data) error {
 	if err != nil {
 		return err
 	}
+	defer r.Close()
+
 	if len(s.DecodingPipe.Decoders) == 0 {
 		done := make(chan error)
-
 		go func() {
-			defer r.Close()
 			_, err := io.Copy(w, r)
 			done <- err
 		}()
@@ -74,7 +74,6 @@ func (s *Service) Decode(id string, w io.WriteCloser, data *Data) error {
 		if err := p.Exec(w); err != nil {
 			return err
 		}
-		r.Close()
 	}
 	return nil
 }
