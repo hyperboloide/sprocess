@@ -151,6 +151,8 @@ Save to the local filesystem.
 
 ```go
 type File struct {
+    Prefix string // add a prefix before id to every file
+	Suffix string // add a suffix after id to every file
     Dir  string // directory
     Name string
 }
@@ -164,6 +166,8 @@ Save to an S3 Bucket
 
 ```go
 type S3Bucket struct {
+    Prefix string // add a prefix before id to every file
+	Suffix string // add a suffix after id to every file
     AccessKey string // AWS Acces Key
     SecretKey string // AWS Secret Key
     Domain    string // AWS Domain
