@@ -61,7 +61,6 @@ func (h *HTTP) Encode(w http.ResponseWriter, r *http.Request, id string) (map[st
 			continue
 		} else {
 			data := NewData()
-			data.Set("identifier", id)
 			data.Set("filename", filename)
 			service := &Service{
 				EncodingPipe: &EncodingPipeline{
