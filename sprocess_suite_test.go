@@ -3,9 +3,9 @@ package sprocess_test
 import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"testing"
 	"log"
 	"os"
+	"testing"
 )
 
 func TestSprocess(t *testing.T) {
@@ -21,7 +21,7 @@ var genBlob = func(size int) []byte {
 	return blob
 }
 
-var testFileReader = func() (*os.File) {
+var testFileReader = func() *os.File {
 	f, err := os.Open("./tests/test.jpg")
 	if err != nil {
 		log.Fatal(err)

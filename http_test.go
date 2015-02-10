@@ -1,16 +1,16 @@
 package sprocess_test
 
 import (
-	. "github.com/hyperboloide/sprocess"
+	"bytes"
 	"crypto/rand"
+	. "github.com/hyperboloide/sprocess"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"io/ioutil"
+	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
-	"bytes"
-	"mime/multipart"
 	"os"
-	"io/ioutil"
 )
 
 var _ = Describe("Http", func() {
@@ -19,13 +19,13 @@ var _ = Describe("Http", func() {
 	var id string
 	var process *HTTP
 	var fileContents []byte
-	
-	It("should start encoders, decoders, Outputer", func(){
+
+	It("should start encoders, decoders, Outputer", func() {
 		aesKey := make([]byte, 32)
 		rand.Read(aesKey)
 
 		aes := &AES{
-			Key: aesKey,
+			Key:  aesKey,
 			Name: "encrypt",
 		}
 		Ω(aes.Start()).To(BeNil())
@@ -40,21 +40,21 @@ var _ = Describe("Http", func() {
 			Name: "file",
 		}
 		Ω(file.Start()).To(BeNil())
-		
+
 		process = &HTTP{
 			Encoders: []Encoder{zip, aes},
 			Decoders: []Decoder{aes, zip},
-			Input: file,
-			Output: file,
-			Delete: file,
+			Input:    file,
+			Output:   file,
+			Delete:   file,
 		}
 	})
-	
+
 	It("should POST file", func() {
 		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			defer GinkgoRecover()
 			id = GenId()
-			
+
 			d, err := process.Encode(w, r, id)
 			Ω(err).To(BeNil())
 			Ω(d).ToNot(BeNil())
@@ -69,14 +69,14 @@ var _ = Describe("Http", func() {
 		fi, err := file.Stat()
 		Ω(err).To(BeNil())
 		file.Close()
-		
+
 		body := new(bytes.Buffer)
 		writer := multipart.NewWriter(body)
 		part, err := writer.CreateFormFile("somefile", fi.Name())
 		Ω(err).To(BeNil())
 		part.Write(fileContents)
 		Ω(writer.Close()).To(BeNil())
-				
+
 		req, err := http.NewRequest("POST", ts.URL, body)
 		Ω(err).To(BeNil())
 		req.Header.Add("Content-Type", writer.FormDataContentType())
@@ -88,10 +88,10 @@ var _ = Describe("Http", func() {
 		Ω(data["filename"]).To(Equal(fi.Name()))
 		Ω(data["identifier"]).To(Equal(id))
 	})
-	
-	It("sould GET file", func(){
+
+	It("sould GET file", func() {
 		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			defer GinkgoRecover()			
+			defer GinkgoRecover()
 
 			Ω(process.Decode(w, r, data)).To(BeNil())
 		}))
@@ -104,12 +104,12 @@ var _ = Describe("Http", func() {
 		buff.ReadFrom(resp.Body)
 		original, err := ioutil.ReadFile("tests/test.jpg")
 		Ω(err).To(BeNil())
-		Ω(bytes.Equal(buff.Bytes(), original)).To(BeTrue())		
+		Ω(bytes.Equal(buff.Bytes(), original)).To(BeTrue())
 	})
 
-	It("sould DELETE file", func(){
+	It("sould DELETE file", func() {
 		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			defer GinkgoRecover()			
+			defer GinkgoRecover()
 
 			Ω(process.Remove(w, r, data)).To(BeNil())
 		}))
@@ -123,6 +123,4 @@ var _ = Describe("Http", func() {
 		Ω(resp.StatusCode).To(Equal(204))
 	})
 
-	
-	
 })

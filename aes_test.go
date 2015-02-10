@@ -2,10 +2,10 @@ package sprocess_test
 
 import (
 	"bytes"
+	"crypto/rand"
 	. "github.com/hyperboloide/sprocess"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"crypto/rand"
 )
 
 var _ = Describe("Aes", func() {
@@ -30,7 +30,7 @@ var _ = Describe("Aes", func() {
 		Ω(err).To(BeNil())
 		Ω(len(d.(string)) > 0).To(BeTrue())
 	})
-	
+
 	It("should Decode", func() {
 		out2 := new(bytes.Buffer)
 		Ω(aes.Start()).To(BeNil())
@@ -41,15 +41,15 @@ var _ = Describe("Aes", func() {
 		Ω(bytes.Equal(out2.Bytes(), testBin)).To(BeTrue())
 	})
 
-	It ("should work with []byte Key", func(){
+	It("should work with []byte Key", func() {
 		out1 := new(bytes.Buffer)
 		data := NewData()
 		key := make([]byte, 32)
 		rand.Read(key)
-		
+
 		aes := &AES{
-			Key: key,
-			Name:         "aes",
+			Key:  key,
+			Name: "aes",
 		}
 
 		Ω(aes.Start()).To(BeNil())
@@ -71,5 +71,5 @@ var _ = Describe("Aes", func() {
 		Ω(bytes.Equal(out2.Bytes(), testBin)).To(BeTrue())
 
 	})
-	
+
 })
