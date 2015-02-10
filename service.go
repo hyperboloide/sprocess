@@ -34,12 +34,11 @@ func (s *Service) Encode(id string, r io.ReadCloser, data *Data) error {
 		return err
 	}
 	if len(s.EncodingPipe.Encoders) == 0 {
-		l, err := io.Copy(w, r)
+		_, err := io.Copy(w, r)
 		if err != nil {
 			return err
 		}
 		w.Close()
-		data.Set("size", l)
 	} else {
 		p := NewEncoding(s.EncodingPipe.Encoders, r, data)
 		if err := p.Exec(w); err != nil {
