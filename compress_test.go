@@ -12,7 +12,7 @@ var _ = Describe("Compress", func() {
 	testBin := genBlob(1 << 22)
 	out1 := new(bytes.Buffer)
 	data := NewData()
-
+	
 	gz := &Gzip{
 		Algo: "speed",
 	}
@@ -23,12 +23,13 @@ var _ = Describe("Compress", func() {
 			bytes.NewReader(testBin),
 			out1,
 			data)).To(BeNil())
-		Ω(bytes.Equal(out1.Bytes(), testBin)).To(BeFalse())
+		output := out1.Bytes()
+		Ω(bytes.Equal(output, testBin)).To(BeFalse())
+		Ω(len(output) < len(testBin)).To(BeTrue())
 	})
 
 	out2 := new(bytes.Buffer)
 	It("should Decode", func() {
-		Ω(gz.Start()).To(BeNil())
 		Ω(gz.Decode(
 			bytes.NewReader(out1.Bytes()),
 			out2,

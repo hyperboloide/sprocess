@@ -6,6 +6,7 @@ import (
 	. "github.com/hyperboloide/sprocess"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"io"
 )
 
 var _ = Describe("Aes", func() {
@@ -18,7 +19,7 @@ var _ = Describe("Aes", func() {
 		Base64String: "ETl5QyPnHfi+vF4HrZfFvO2Julv4LVL7HNB1N7vkLGU=",
 		Name:         "aes",
 	}
-
+	
 	It("should Encode", func() {
 		Ω(aes.Start()).To(BeNil())
 		Ω(aes.Encode(
@@ -33,7 +34,6 @@ var _ = Describe("Aes", func() {
 
 	It("should Decode", func() {
 		out2 := new(bytes.Buffer)
-		Ω(aes.Start()).To(BeNil())
 		Ω(aes.Decode(
 			bytes.NewReader(out1.Bytes()),
 			out2,
@@ -72,4 +72,53 @@ var _ = Describe("Aes", func() {
 
 	})
 
+	It("should do service with aes", func(){
+		data := NewData()
+		id := "encrypted"
+		
+		fs := &File{
+			Dir: "/tmp/" + GenId(),
+			Name: "fs",
+		}
+		Ω(fs.Start()).To(BeNil())
+		
+		key := make([]byte, 32)
+		rand.Read(key)
+		aes := &AES{
+			Key:  key,
+			Name: "aes",
+		}
+		Ω(aes.Start()).To(BeNil())
+
+		chck := &CheckSum{
+			Name: "chck",
+		}
+		Ω(chck.Start()).To(BeNil())
+
+		service := &Service{
+			EncodingPipe: &EncodingPipeline{
+				Encoders: []Encoder{chck, aes},				
+				Output:   fs,
+			},
+			DecodingPipe: &DecodingPipeline{
+				Decoders: []Decoder{aes, chck},
+				Input:   fs,
+			},
+		}
+
+		Ω(service.Encode(id, testFileReader(), data)).To(BeNil())
+		d := data.Export()
+		_, exists := d["chck"]
+		Ω(exists).To(BeTrue())
+
+		out := new(bytes.Buffer)
+		r, w := io.Pipe()
+		go func() {
+			io.Copy(out, r)
+		}()
+		Ω(service.Decode(id, w, data)).To(BeNil())
+
+		
+	})
+	
 })
