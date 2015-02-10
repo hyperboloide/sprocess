@@ -35,7 +35,7 @@ You must provide either a `Key` or a `Base64String`. To encrypt in AES 256, prov
 
 #### Bash
 
-Run a command in a Bash shell. The stream is piped to the command.
+Run a command in a Bash shell. The stream is piped directly to the shell process.
 
 ```go
 type Bash struct {
@@ -43,6 +43,8 @@ type Bash struct {
     Name string
 }
 ```
+
+For a foolish example, `Cmd` could be just `"cat"` and the input will be piped in and the output read from stdout.
 
 #### Gzip
 
@@ -58,7 +60,7 @@ type Gzip struct {
 
 *  `"best"` : `gzip.BestCompression`
 *  `"speed"` : `gzip.BestSpeed`
-*  `"default"`: `gzip.DefaultCompression`
+*  `"default"`: `gzip.DefaultCompression` (default if not set)
 
 #### Image
 Transforms an image (for resize and thumbnails). Note that **Image is Encoder only**.
