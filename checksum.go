@@ -32,6 +32,9 @@ func (c *CheckSum) Start() error {
 	default:
 		return errors.New("Hash '" + c.Hash + "' is not supported")
 	}
+	if c.Name == "" {
+		return errors.New("Checksum must have a name")
+	}
 	return nil
 }
 
