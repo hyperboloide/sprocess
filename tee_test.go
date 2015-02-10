@@ -46,18 +46,21 @@ var _ = Describe("Tee", func() {
 
 	It("should do service with tee", func() {
 		data := NewData()
-		id := "pic.jpg"
+		id := "pic"
 		dir := "/tmp/" + GenId()
 
 		outputLarge := &File{
-			Dir:  dir + "/large",
-			Name: "file",
+			Suffix: ".jpg",
+			Dir:    dir,
+			Name:   "file",
 		}
 		Ω(outputLarge.Start()).To(BeNil())
 
 		outputSmall := &File{
-			Dir:  dir + "/small",
-			Name: "file",
+			Prefix: "small_",
+			Suffix: ".jpg",
+			Dir:    dir,
+			Name:   "file",
 		}
 		Ω(outputSmall.Start()).To(BeNil())
 
@@ -97,7 +100,7 @@ var _ = Describe("Tee", func() {
 		}
 
 		Ω(service.Encode(id, testFileReader(), data)).To(BeNil())
-		large, err := os.Open(dir + "/large/" + id)
+		large, err := os.Open(dir + "/" + id + ".jpg")
 		Ω(err).To(BeNil())
 		img, format, err := image.Decode(large)
 		Ω(err).To(BeNil())
@@ -105,7 +108,7 @@ var _ = Describe("Tee", func() {
 		Ω(img).ToNot(BeNil())
 		Ω(img.Bounds().Size().Y).To(Equal(300))
 
-		small, err := os.Open(dir + "/small/" + id)
+		small, err := os.Open(dir + "/small_" + id + ".jpg")
 		Ω(err).To(BeNil())
 		img, format, err = image.Decode(small)
 		Ω(err).To(BeNil())

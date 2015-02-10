@@ -16,8 +16,10 @@ import (
 )
 
 type File struct {
-	Dir  string
-	Name string
+	Prefix string
+	Suffix string
+	Dir    string
+	Name   string
 }
 
 func (s *File) join(path string) string {
@@ -39,13 +41,13 @@ func (s *File) Start() error {
 }
 
 func (s *File) NewWriter(id string, d *Data) (io.WriteCloser, error) {
-	return os.OpenFile(s.join(id), os.O_RDWR|os.O_CREATE, 0600)
+	return os.OpenFile(s.join(s.Prefix+id+s.Suffix), os.O_RDWR|os.O_CREATE, 0600)
 }
 
 func (s *File) NewReader(id string, d *Data) (io.ReadCloser, error) {
-	return os.OpenFile(s.join(id), os.O_RDONLY, 0400)
+	return os.OpenFile(s.join(s.Prefix+id+s.Suffix), os.O_RDONLY, 0400)
 }
 
 func (s *File) Delete(id string, d *Data) error {
-	return os.Remove(s.join(id))
+	return os.Remove(s.join(s.Prefix + id + s.Suffix))
 }

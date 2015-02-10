@@ -15,6 +15,8 @@ import (
 )
 
 type S3Bucket struct {
+	Prefix    string
+	Suffix    string
 	AccessKey string
 	SecretKey string
 	Domain    string
@@ -51,14 +53,14 @@ func (s *S3Bucket) Init() error {
 }
 
 func (s *S3Bucket) NewWriter(id string, d *Data) (io.WriteCloser, error) {
-	return s.bucket.PutWriter(id, nil, nil)
+	return s.bucket.PutWriter(s.Prefix+id+s.Suffix, nil, nil)
 }
 
 func (s *S3Bucket) NewReader(id string, d *Data) (io.ReadCloser, error) {
-	r, _, err := s.bucket.GetReader(id, nil)
+	r, _, err := s.bucket.GetReader(s.Prefix+id+s.Suffix, nil)
 	return r, err
 }
 
 func (s *S3Bucket) Delete(id string, d *Data) error {
-	return s.bucket.Delete(id)
+	return s.bucket.Delete(s.Prefix + id + s.Suffix)
 }
