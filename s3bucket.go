@@ -29,7 +29,7 @@ func (s *S3Bucket) GetName() string {
 	return s.Name
 }
 
-func (s *S3Bucket) Init() error {
+func (s *S3Bucket) Start() error {
 	if s.Bucket == "" {
 		return errors.New("bucket name is undefined")
 	}

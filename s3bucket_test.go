@@ -23,7 +23,7 @@ var _ = Describe("S3bucket", func() {
 	id := GenId()
 
 	It("should Write", func() {
-		Ω(s3.Init()).To(BeNil())
+		Ω(s3.Start()).To(BeNil())
 		w, err := s3.NewWriter(id, data)
 		Ω(err).To(BeNil())
 		Ω(w).ToNot(BeNil())
