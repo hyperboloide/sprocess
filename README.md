@@ -39,12 +39,10 @@ Run a command in a Bash shell. The stream is piped directly to the shell process
 
 ```go
 type Bash struct {
-    Cmd  string // Command to run.
+    Cmd  string // Command to run ,for example "gzip" or "gzip -d" to compress and decompress.
     Name string
 }
 ```
-
-For a foolish example, `Cmd` could be just `"cat"` and the input will be piped in and the output read from stdout.
 
 #### Gzip
 
@@ -95,6 +93,22 @@ type Image struct {
 * `jpg` (default if not set)
 * `png`
 * `gif`
+
+#### Tee
+
+Divides an input stream, this is usefull if you want to save multiple files at once. For example you may want to save a picture and at the same time create a thumbnail. Note that **Tee is Encoder only**.
+
+```go
+type Tee struct {
+    Encoders []Encoder
+    Output   Outputer
+    Name     string
+}
+```
+
+`Encoders` defines the operations to be applied on the new stream. This can be empty.
+`Output` defines where to save the output. Note that you should a unique `Outputer` to avoid conflicts.
+
 
 ### Outputs, Inputs
 
