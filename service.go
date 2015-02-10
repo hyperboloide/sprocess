@@ -3,7 +3,7 @@
 //
 // Created by Frederic DELBOS - fred@hyperboloide.com on Feb  8 2015.
 // This file is subject to the terms and conditions defined in
-// file 'LICENSE.txt', which is part of this source code package.
+// file 'LICENSE', which is part of this source code package.
 //
 
 package sprocess
@@ -24,8 +24,8 @@ type Service struct {
 }
 
 func (s *Service) Encode(id string, r io.ReadCloser, data *Data) error {
-	defer data.Set("identifier", id)
-	
+	data.Set("identifier", id)
+
 	if s.EncodingPipe == nil {
 		return NoEncodindError
 	}
@@ -34,7 +34,6 @@ func (s *Service) Encode(id string, r io.ReadCloser, data *Data) error {
 		return err
 	}
 	if len(s.EncodingPipe.Encoders) == 0 {
-		
 		l, err := io.Copy(w, r)
 		if err != nil {
 			return err

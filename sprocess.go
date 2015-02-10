@@ -1,7 +1,9 @@
 //
 // sprocess.go
 //
-// Created by Frederic DELBOS - fred@hyperboloide.com on Nov  8 2014.
+// Created by Frederic DELBOS - fred@hyperboloide.com on Feb 10 2015.
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE', which is part of this source code package.
 //
 
 package sprocess

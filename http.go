@@ -3,7 +3,7 @@
 //
 // Created by Frederic DELBOS - fred@hyperboloide.com on Feb  8 2015.
 // This file is subject to the terms and conditions defined in
-// file 'LICENSE.txt', which is part of this source code package.
+// file 'LICENSE', which is part of this source code package.
 //
 
 package sprocess
@@ -36,12 +36,12 @@ func badRequest(w http.ResponseWriter) {
 
 func internalError(w http.ResponseWriter) {
 	http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-}		
+}
 
 func (h *HTTP) Encode(w http.ResponseWriter, r *http.Request, id string) (map[string]interface{}, error) {
 	if h.Output == nil {
 		internalError(w)
-		return nil,  errors.New("No Output provided")
+		return nil, errors.New("No Output provided")
 	}
 
 	mr, err := r.MultipartReader()
@@ -66,7 +66,7 @@ func (h *HTTP) Encode(w http.ResponseWriter, r *http.Request, id string) (map[st
 			service := &Service{
 				EncodingPipe: &EncodingPipeline{
 					Encoders: h.Encoders,
-					Output: h.Output,
+					Output:   h.Output,
 				},
 			}
 			if err = service.Encode(id, part, data); err != nil {
@@ -89,10 +89,10 @@ func (h *HTTP) Decode(w http.ResponseWriter, r *http.Request, dataMap map[string
 	service := &Service{
 		DecodingPipe: &DecodingPipeline{
 			Decoders: h.Decoders,
-			Input: h.Input,
+			Input:    h.Input,
 		},
 	}
-	
+
 	data := NewDataFrom(dataMap)
 	idIf, err := data.Get("identifier")
 	if err != nil {
@@ -104,7 +104,7 @@ func (h *HTTP) Decode(w http.ResponseWriter, r *http.Request, dataMap map[string
 		internalError(w)
 		return errors.New("Key 'identifier' is not a string")
 	}
-	
+
 	pr, pw := io.Pipe()
 
 	go io.Copy(w, pr)

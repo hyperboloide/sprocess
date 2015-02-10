@@ -3,15 +3,15 @@
 //
 // Created by Frederic DELBOS - fred@hyperboloide.com on Feb  8 2015.
 // This file is subject to the terms and conditions defined in
-// file 'LICENSE.txt', which is part of this source code package.
+// file 'LICENSE', which is part of this source code package.
 //
 
 package sprocess
 
 import (
+	"errors"
 	"github.com/rlmcpherson/s3gof3r"
 	"io"
-	"errors"
 )
 
 type S3Bucket struct {
