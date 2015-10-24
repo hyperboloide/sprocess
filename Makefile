@@ -10,12 +10,17 @@ VERSION = $(shell cat .version)
 NAME = github.com/hyperboloide/sprocess
 
 test:
-	go test
+	ginkgo -r
 
 fmt:
 	go fmt ./...
 
 travis:
-	ginkgo --skip="S3bucket|GoogleCloud"
+	ginkgo \
+	--skip="S3bucket|GoogleCloud" \
+	-r \
+	--race \
+	--randomizeSuites \
+	--trace
 
 .PHONY: test fmt travis

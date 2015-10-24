@@ -33,7 +33,6 @@ func (s *Service) Encode(id string, r io.ReadCloser, data *Data) error {
 	if err != nil {
 		return err
 	}
-	defer w.Close()
 
 	if len(s.EncodingPipe.Encoders) == 0 {
 		_, err := io.Copy(w, r)
@@ -57,15 +56,9 @@ func (s *Service) Decode(id string, w io.WriteCloser, data *Data) error {
 	if err != nil {
 		return err
 	}
-	defer r.Close()
 
 	if len(s.DecodingPipe.Decoders) == 0 {
-		done := make(chan error)
-		go func() {
-			_, err := io.Copy(w, r)
-			done <- err
-		}()
-		err := <-done
+		_, err := io.Copy(w, r)
 		if err != nil {
 			return err
 		}

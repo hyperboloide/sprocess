@@ -10,3 +10,5 @@ install:
   - go get github.com/dchest/uniuri
   - go get github.com/nfnt/resize
   - go get github.com/rlmcpherson/s3gof3r
+  - go install github.com/onsi/ginkgo/ginkgo
+  - export PATH=$PATH:$HOME/gopath/bin
