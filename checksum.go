@@ -19,7 +19,11 @@ import (
 
 type CheckSum struct {
 	Hash string
-	Name
+	Name string
+}
+
+func (c *CheckSum) GetName() string {
+	return c.Name
 }
 
 func (c *CheckSum) Start() error {

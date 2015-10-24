@@ -14,8 +14,13 @@ import (
 )
 
 type Size struct {
-	Name
+	Name string
 }
+
+func (s *Size) GetName() string {
+	return s.Name
+}
+
 
 func (s *Size) Start() error {
 	if s.Name == "" {

@@ -23,7 +23,11 @@ func (nwc *NullWriterCloser) Close() error {
 }
 
 type Null struct {
-	Name
+	Name string
+}
+
+func (n *Null) GetName() string {
+	return n.Name
 }
 
 func (n *Null) Start() error {

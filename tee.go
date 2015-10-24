@@ -16,7 +16,11 @@ import (
 type Tee struct {
 	Encoders []Encoder
 	Output   Outputer
-	Name
+	Name string
+}
+
+func (t *Tee) GetName() string {
+	return t.Name
 }
 
 func (t *Tee) GetOutputs() []string {

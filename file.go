@@ -19,7 +19,11 @@ type File struct {
 	Prefix string
 	Suffix string
 	Dir    string
-	Name
+	Name string
+}
+
+func (s *File) GetName() string {
+	return s.Name
 }
 
 func (s *File) join(path string) string {

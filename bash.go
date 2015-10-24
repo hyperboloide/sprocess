@@ -15,7 +15,11 @@ import (
 
 type Bash struct {
 	Cmd string
-	Name
+	Name string
+}
+
+func (b *Bash) GetName() string {
+	return b.Name
 }
 
 func (b *Bash) Start() error {

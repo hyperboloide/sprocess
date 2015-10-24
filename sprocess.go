@@ -19,12 +19,6 @@ type Base interface {
 	Start() error
 }
 
-type Name string
-
-func (n Name) GetName() string {
-	return string(n)
-}
-
 type Encoder interface {
 	Base
 	Encode(io.Reader, io.Writer, *Data) error
