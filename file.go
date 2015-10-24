@@ -16,10 +16,12 @@ import (
 )
 
 type File struct {
-	Prefix string
-	Suffix string
-	Dir    string
-	Name   string
+	Prefix      string
+	Suffix      string
+	Dir         string
+	AllowSub    bool
+	RemoveEmpty bool
+	Name        string
 }
 
 func (s *File) GetName() string {
@@ -41,13 +43,49 @@ func (s *File) Start() error {
 }
 
 func (s *File) NewWriter(id string, d *Data) (io.WriteCloser, error) {
-	return os.OpenFile(s.join(s.Prefix+id+s.Suffix), os.O_RDWR|os.O_CREATE, 0600)
+	name := s.Prefix + id + s.Suffix
+
+	if filepath.Dir(name) == "." {
+		return os.OpenFile(s.join(name), os.O_RDWR|os.O_CREATE, 0600)
+	} else if s.AllowSub == false {
+		return nil, errors.New("sub directories not allowed")
+	}
+	if err := os.MkdirAll(s.join(filepath.Dir(name)), 0700); err != nil {
+		return nil, err
+	}
+	return os.OpenFile(s.join(name), os.O_RDWR|os.O_CREATE, 0600)
 }
 
 func (s *File) NewReader(id string, d *Data) (io.ReadCloser, error) {
 	return os.OpenFile(s.join(s.Prefix+id+s.Suffix), os.O_RDONLY, 0400)
 }
 
+func (s *File) RemoveIfEmpty(dir string) error {
+	if dir == "." {
+		return nil
+	} else {
+		f, err := os.Open(s.join(dir))
+		if err != nil {
+			return err
+		}
+		defer f.Close()
+
+		_, err = f.Readdir(1)
+		if err != io.EOF {
+			return err
+		}
+	}
+	os.Remove(s.join(dir))
+	return s.RemoveIfEmpty(filepath.Dir(dir))
+}
+
 func (s *File) Delete(id string, d *Data) error {
-	return os.Remove(s.join(s.Prefix + id + s.Suffix))
+	name := s.Prefix + id + s.Suffix
+	if err := os.Remove(s.join(name)); err != nil {
+		return err
+	}
+	if s.RemoveEmpty == true && filepath.Dir(name) != "." {
+		return s.RemoveIfEmpty(filepath.Dir(name))
+	}
+	return nil
 }
