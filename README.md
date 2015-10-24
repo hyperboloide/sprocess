@@ -1,6 +1,9 @@
 # sprocess
 
+[![Build Status](https://travis-ci.org/hyperboloide/sprocess.svg?branch=master)](https://travis-ci.org/hyperboloide/sprocess)
+
 sprocess is a library designed to do transformations on golang streams and http requests.
+
 
 ## installation
 
@@ -192,7 +195,3 @@ export AWS_SECRET_ACCESS_KEY="my_secret_access_key"
 **sprocess** also contains HTTP handlers to save, get and delete files.
 
 An example can be found here : [https://gist.github.com/fdelbos/0c1a0b47ae2cab0e971f#file-example-go](https://gist.github.com/fdelbos/0c1a0b47ae2cab0e971f#file-example-go)
-
-
-
-
