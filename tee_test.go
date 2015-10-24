@@ -15,8 +15,8 @@ var _ = Describe("Tee", func() {
 	testBin := genBlob(1 << 22)
 
 	It("should find encoders recursivly", func() {
-		output1 := &File{"", "", "/tmp/1", "file1"}
-		output2 := &File{"", "", "/tmp/2", "file2"}
+		output1 := &File{"", "", tmpDir(), "file1"}
+		output2 := &File{"", "", tmpDir(), "file2"}
 		tee1 := &Tee{
 			Output: output1,
 			Name:   "tee1",
@@ -36,7 +36,7 @@ var _ = Describe("Tee", func() {
 		data.Set("identifier", id)
 
 		output := &File{
-			Dir:  "/tmp/" + GenId(),
+			Dir:  tmpDir(),
 			Name: "file",
 		}
 		Ω(output.Start()).To(BeNil())
@@ -62,7 +62,7 @@ var _ = Describe("Tee", func() {
 	It("should do service with tee", func() {
 		data := NewData()
 		id := "pic"
-		dir := "/tmp/" + GenId()
+		dir := tmpDir()
 
 		outputLarge := &File{
 			Suffix: ".jpg",
@@ -141,7 +141,7 @@ var _ = Describe("Tee", func() {
 	It("should do service with tee error", func() {
 		data := NewData()
 		id := "pic.jpg"
-		dir := "/tmp/" + GenId()
+		dir := tmpDir()
 
 		outputLarge := &File{
 			Dir:  dir + "/large",

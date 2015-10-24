@@ -81,7 +81,7 @@ var _ = Describe("Aes", func() {
 		id := "encrypted"
 
 		fs := &File{
-			Dir:  "/tmp/" + GenId(),
+			Dir:  tmpDir(),
 			Name: "fs",
 		}
 		Ω(fs.Start()).To(BeNil())

@@ -5,6 +5,7 @@ import (
 	. "github.com/onsi/gomega"
 	"log"
 	"os"
+	"io/ioutil"
 	"testing"
 )
 
@@ -12,6 +13,18 @@ func TestSprocess(t *testing.T) {
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "Sprocess Suite")
 }
+
+var TMP string
+
+var _ = BeforeSuite(func() {
+	var err error
+    TMP, err = ioutil.TempDir("", "")
+	Ω(err).To(BeNil())
+})
+
+var _ = AfterSuite(func() {
+    os.RemoveAll(TMP)
+})
 
 var genBlob = func(size int) []byte {
 	blob := make([]byte, size)
@@ -27,4 +40,12 @@ var testFileReader = func() *os.File {
 		log.Fatal(err)
 	}
 	return f
+}
+
+var tmpDir = func() string {
+	 d, err := ioutil.TempDir(TMP, "")
+	 if err != nil {
+		log.Fatal(err)
+	}
+	return d
 }

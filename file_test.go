@@ -13,12 +13,11 @@ var _ = Describe("File", func() {
 
 	testBin := genBlob(1 << 22)
 	data := NewData()
+	id := GenId()
 	f := &File{
-		Dir:  "/tmp/" + GenId(),
+		Dir:  tmpDir(),
 		Name: "file",
 	}
-
-	id := GenId()
 
 	It("should Write", func() {
 		Ω(f.Start()).To(BeNil())

@@ -3,6 +3,7 @@ package sprocess_test
 import (
 	"bytes"
 	"crypto/rand"
+	"fmt"
 	. "github.com/hyperboloide/sprocess"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -10,6 +11,7 @@ import (
 	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
+	"net/textproto"
 	"os"
 )
 
@@ -36,7 +38,7 @@ var _ = Describe("Http", func() {
 		Ω(zip.Start()).To(BeNil())
 
 		file := &File{
-			Dir:  "/tmp/" + GenId(),
+			Dir:  tmpDir(),
 			Name: "file",
 		}
 		Ω(file.Start()).To(BeNil())
@@ -72,8 +74,14 @@ var _ = Describe("Http", func() {
 
 		body := new(bytes.Buffer)
 		writer := multipart.NewWriter(body)
-		part, err := writer.CreateFormFile("somefile", fi.Name())
+		header := make(textproto.MIMEHeader)
+		header.Set("Content-Type", "image/jpeg")
+		header.Set("Content-Disposition",
+			fmt.Sprintf(`form-data; name="%s"; filename="%s"`, "file", "test.jpg"))
+		part, err := writer.CreatePart(header)
+
 		Ω(err).To(BeNil())
+
 		part.Write(fileContents)
 		Ω(writer.Close()).To(BeNil())
 
