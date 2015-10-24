@@ -15,8 +15,8 @@ var _ = Describe("Tee", func() {
 	testBin := genBlob(1 << 22)
 
 	It("should find encoders recursivly", func() {
-		output1 := &File{"", "", tmpDir(), "file1"}
-		output2 := &File{"", "", tmpDir(), "file2"}
+		output1 := &Null{"n1"}
+		output2 := &Null{"n2"}
 		tee1 := &Tee{
 			Output: output1,
 			Name:   "tee1",
@@ -26,7 +26,7 @@ var _ = Describe("Tee", func() {
 			Output:   output2,
 			Name:     "tee2",
 		}
-		Ω(tee2.GetOutputs()).To(Equal([]string{"file2", "file1"}))
+		Ω(tee2.GetOutputs()).To(Equal([]string{"n2", "n1"}))
 	})
 
 	It("should Encode", func() {
