@@ -15,7 +15,7 @@ var _ = Describe("S3bucket", func() {
 	rand.Read(testBin)
 	data := NewData()
 	s3 := &S3Bucket{
-		Bucket: "sprocess",
+		Bucket: "sprocess.v2",
 		Name:   "s3",
 		Domain: "s3-eu-west-1.amazonaws.com",
 	}

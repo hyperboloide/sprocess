@@ -15,10 +15,7 @@ var _ = Describe("Bash", func() {
 
 		out1 := new(bytes.Buffer)
 		data := NewData()
-		zip := &Bash{
-			Cmd:  "gzip",
-			Name: "zip",
-		}
+		zip := &Bash{"gzip", "zip"}
 
 		Ω(zip.Start()).To(BeNil())
 		Ω(zip.Encode(

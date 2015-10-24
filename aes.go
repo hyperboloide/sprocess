@@ -21,11 +21,7 @@ type AES struct {
 	block        cipher.Block
 	Key          []byte
 	Base64String string
-	Name         string
-}
-
-func (c *AES) GetName() string {
-	return c.Name
+	Name
 }
 
 func (c *AES) Start() error {

@@ -26,6 +26,18 @@ type EncodingPipeline struct {
 	Output   Outputer
 }
 
+func (ep *EncodingPipeline) GetOutputs() []string {
+	names := []string{ep.Output.GetName()}
+	for _, encoder := range ep.Encoders {
+		if tee, found := encoder.(*Tee); found == true {
+			if n := tee.GetOutputs(); n != nil && len(n) > 0 {
+				names = append(names, n...)
+			}
+		}
+	}
+	return names
+}
+
 type DecodingPipeline struct {
 	Decoders []Decoder
 	Input    Inputer

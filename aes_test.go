@@ -20,6 +20,10 @@ var _ = Describe("Aes", func() {
 		Name:         "aes",
 	}
 
+	It("should have a name", func() {
+		Ω(aes.GetName()).To(Equal("aes"))
+	})
+
 	It("should Encode", func() {
 		Ω(aes.Start()).To(BeNil())
 		Ω(aes.Encode(

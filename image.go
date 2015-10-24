@@ -32,12 +32,8 @@ type Image struct {
 	Width         uint
 	Interpolation string
 	Output        string
-	Name          string
 	interpolation resize.InterpolationFunction
-}
-
-func (i *Image) GetName() string {
-	return i.Name
+	Name
 }
 
 func (i *Image) Start() error {

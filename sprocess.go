@@ -9,8 +9,6 @@
 package sprocess
 
 import (
-	//	"errors"
-	//	"fmt"
 	"io"
 )
 
@@ -19,6 +17,12 @@ type DataMap map[string]interface{}
 type Base interface {
 	GetName() string
 	Start() error
+}
+
+type Name string
+
+func (n Name) GetName() string {
+	return string(n)
 }
 
 type Encoder interface {

@@ -14,6 +14,21 @@ var _ = Describe("Tee", func() {
 
 	testBin := genBlob(1 << 22)
 
+	It("should find encoders recursivly", func() {
+		output1 := &File{"", "", "/tmp/1", "file1"}
+		output2 := &File{"", "", "/tmp/2", "file2"}
+		tee1 := &Tee{
+			Output: output1,
+			Name:   "tee1",
+		}
+		tee2 := &Tee{
+			Encoders: []Encoder{tee1},
+			Output:   output2,
+			Name:     "tee2",
+		}
+		Ω(tee2.GetOutputs()).To(Equal([]string{"file2", "file1"}))
+	})
+
 	It("should Encode", func() {
 		out1 := new(bytes.Buffer)
 		data := NewData()
@@ -31,8 +46,8 @@ var _ = Describe("Tee", func() {
 			Name:   "tee",
 		}
 		Ω(tee.Start()).To(BeNil())
+		Ω(tee.GetOutputs()).To(Equal([]string{"file"}))
 
-		Ω(tee.Start()).To(BeNil())
 		Ω(tee.Encode(
 			bytes.NewReader(testBin),
 			out1,

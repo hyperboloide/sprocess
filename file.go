@@ -19,15 +19,11 @@ type File struct {
 	Prefix string
 	Suffix string
 	Dir    string
-	Name   string
+	Name
 }
 
 func (s *File) join(path string) string {
 	return filepath.Join(s.Dir, path)
-}
-
-func (s *File) GetName() string {
-	return s.Name
 }
 
 func (s *File) Start() error {

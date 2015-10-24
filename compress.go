@@ -15,12 +15,8 @@ import (
 
 type Gzip struct {
 	Algo  string
-	Name  string
 	level int
-}
-
-func (c *Gzip) GetName() string {
-	return c.Name
+	Name
 }
 
 func (c *Gzip) Start() error {

@@ -15,9 +15,7 @@ var _ = Describe("Size", func() {
 	out1 := new(bytes.Buffer)
 	data := NewData()
 
-	size := &Size{
-		Name: "size",
-	}
+	size := &Size{"size"}
 
 	It("should Encode", func() {
 		Ω(size.Start()).To(BeNil())

@@ -16,11 +16,19 @@ import (
 type Tee struct {
 	Encoders []Encoder
 	Output   Outputer
-	Name     string
+	Name
 }
 
-func (t *Tee) GetName() string {
-	return t.Name
+func (t *Tee) GetOutputs() []string {
+	names := []string{t.Output.GetName()}
+	for _, encoder := range t.Encoders {
+		if tee, found := encoder.(*Tee); found == true {
+			if n := tee.GetOutputs(); n != nil && len(n) > 0 {
+				names = append(names, n...)
+			}
+		}
+	}
+	return names
 }
 
 func (t *Tee) Start() error {
@@ -66,6 +74,6 @@ func (t *Tee) Encode(r io.Reader, w io.Writer, d *Data) error {
 		return err
 	}
 	err = <-errorTee
-	d.Set(t.Name, teeData.Export())
+	d.Set(t.GetName(), teeData.Export())
 	return err
 }

@@ -14,11 +14,7 @@ import (
 )
 
 type Size struct {
-	Name string
-}
-
-func (s *Size) GetName() string {
-	return s.Name
+	Name
 }
 
 func (s *Size) Start() error {
