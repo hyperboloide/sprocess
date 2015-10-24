@@ -21,14 +21,13 @@ type S3Bucket struct {
 	SecretKey string
 	Domain    string
 	Bucket    string
-	Name string
-	bucket *s3gof3r.Bucket
+	Name      string
+	bucket    *s3gof3r.Bucket
 }
 
 func (s *S3Bucket) GetName() string {
 	return s.Name
 }
-
 
 func (s *S3Bucket) Start() error {
 	if s.Bucket == "" {

@@ -19,7 +19,7 @@ type File struct {
 	Prefix string
 	Suffix string
 	Dir    string
-	Name string
+	Name   string
 }
 
 func (s *File) GetName() string {

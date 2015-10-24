@@ -16,7 +16,7 @@ import (
 type Tee struct {
 	Encoders []Encoder
 	Output   Outputer
-	Name string
+	Name     string
 }
 
 func (t *Tee) GetName() string {

@@ -16,7 +16,7 @@ import (
 type Gzip struct {
 	Algo  string
 	level int
-	Name string
+	Name  string
 }
 
 func (c *Gzip) GetName() string {

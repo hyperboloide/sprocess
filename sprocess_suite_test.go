@@ -3,9 +3,9 @@ package sprocess_test
 import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"io/ioutil"
 	"log"
 	"os"
-	"io/ioutil"
 	"testing"
 )
 
@@ -18,12 +18,12 @@ var TMP string
 
 var _ = BeforeSuite(func() {
 	var err error
-    TMP, err = ioutil.TempDir("", "")
+	TMP, err = ioutil.TempDir("", "")
 	Ω(err).To(BeNil())
 })
 
 var _ = AfterSuite(func() {
-    os.RemoveAll(TMP)
+	os.RemoveAll(TMP)
 })
 
 var genBlob = func(size int) []byte {
@@ -43,8 +43,8 @@ var testFileReader = func() *os.File {
 }
 
 var tmpDir = func() string {
-	 d, err := ioutil.TempDir(TMP, "")
-	 if err != nil {
+	d, err := ioutil.TempDir(TMP, "")
+	if err != nil {
 		log.Fatal(err)
 	}
 	return d

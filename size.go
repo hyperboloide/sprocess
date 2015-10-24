@@ -21,7 +21,6 @@ func (s *Size) GetName() string {
 	return s.Name
 }
 
-
 func (s *Size) Start() error {
 	if s.Name == "" {
 		return errors.New("Size must have a name")

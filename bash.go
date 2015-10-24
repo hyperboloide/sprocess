@@ -14,7 +14,7 @@ import (
 )
 
 type Bash struct {
-	Cmd string
+	Cmd  string
 	Name string
 }
 
