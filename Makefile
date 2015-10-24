@@ -15,4 +15,7 @@ test:
 fmt:
 	go fmt ./...
 
-.PHONY: test fmt
+travis:
+	ginkgo --skip="S3bucket|GoogleCloud"
+
+.PHONY: test fmt travis
