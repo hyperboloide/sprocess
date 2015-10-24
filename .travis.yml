@@ -7,6 +7,7 @@ go:
   - tip
 install:
   - go get github.com/onsi/ginkgo
+  - go get github.com/onsi/gomega
   - go get github.com/dchest/uniuri
   - go get github.com/nfnt/resize
   - go get github.com/rlmcpherson/s3gof3r
