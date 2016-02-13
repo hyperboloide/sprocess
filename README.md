@@ -1,4 +1,6 @@
-# sprocess
+# sprocess 
+
+this library is deprecated, use [Pipe](https://github.com/hyperboloide/pipe) instead.
 
 [![Build Status](https://travis-ci.org/hyperboloide/sprocess.svg?branch=master)](https://travis-ci.org/hyperboloide/sprocess)
 
